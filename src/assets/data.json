@@ -1,0 +1,32 @@
+[
+  {
+    "name": "מעברים החדשה",
+    "tables": [
+      {
+        "role" : "תקשורת",
+        "name" : "Passage_Error",
+        "columns": ["ID", "CITIZEN_ID", "START_DATE", "ERROR_MSG", "TRANSLATE"]
+      },
+      {
+        "role" : "לוגיקה",
+        "name" : "Passage_Trg_Error",
+        "columns": ["ID", "CITIZEN_ID", "START_DATE", "ERROR_MSG", "TRANSLATE"]
+      }
+    ]
+  },
+  {
+    "name": "מעברים הישנה",
+    "tables": [
+      {
+        "role" : "תקשורת",
+        "name" : "Au_Passage_Error",
+        "columns": ["PI_ID_NUM", "PI_DATE", "ERROR_MSG", "TRANSLATE"]
+      },
+      {
+        "role" : "לוגיקה",
+        "name" : "Au_Passage_Trg_Error",
+        "columns": ["PI_ID_NUM", "PI_DATE", "ERROR_MSG", "TRANSLATE"]
+      }
+    ]
+  }
+]

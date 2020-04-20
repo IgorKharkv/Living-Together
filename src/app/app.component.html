@@ -1,44 +1,18 @@
 <div style="display: flex; justify-content: center">
-  <h1>My Nigga</h1>
+  <img src="../assets/title.png" alt="Living Together by Igor and the logo by ido" width="20%">
 </div>
 
 <div>
 
   <mat-tab-group mat-align-tabs="center">
 
-    <mat-tab label="מעברים החדשה">
+    <mat-tab *ngFor="let database of getDatabases()"  [label]="database.name">
 
       <mat-tab-group mat-align-tabs="center">
 
-        <mat-tab label="תקשורת">
+        <mat-tab *ngFor="let table of database.tables"  [label]="table.role">
 
-          <app-table></app-table>
-
-        </mat-tab>
-
-        <mat-tab label="לוגיקה">
-
-          <app-table></app-table>
-
-        </mat-tab>
-
-      </mat-tab-group>
-
-    </mat-tab>
-
-    <mat-tab label="מעברים הישנה">
-
-      <mat-tab-group mat-align-tabs="center">
-
-        <mat-tab label="תקשורת">
-
-          <app-table></app-table>
-
-        </mat-tab>
-
-        <mat-tab label="לוגיקה">
-
-          <app-table></app-table>
+          <app-table [table]="table"></app-table>
 
         </mat-tab>
 
