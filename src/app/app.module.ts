@@ -4,8 +4,16 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatTableModule, MatTabsModule} from '@angular/material';
-import { TableComponent } from './table/table.component';
+import {
+  MatButtonModule,
+  MatIconModule,
+  MatListModule,
+  MatSidenavModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule
+} from '@angular/material';
+import {TableComponent} from './table/table.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +26,11 @@ import { TableComponent } from './table/table.component';
     BrowserAnimationsModule,
     MatTabsModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

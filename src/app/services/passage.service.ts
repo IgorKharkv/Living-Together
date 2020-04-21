@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {AuPassage} from '../models/au_passage';
 import {Passage} from '../models/passage';
 import databases from '../../assets/data.json';
-import errorsTranslator from '../../assets/error_messages_translate.json';
+import errorsTranslator from "../../assets/error_messages_translate.json";
 import {getAuPassages, getPassages} from '../mocks/db-data';
 import {map} from 'rxjs/operators';
 import {ErrorsTranslator} from '../models/errorsTranslator';
