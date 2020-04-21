@@ -4,12 +4,13 @@ table {
   margin-right:auto;
 }
 
+button {
+  margin-right: 1%;
+  margin-left: 1%;
+}
+
 .buttons {
   margin: 1%;
   text-align: center;
 }
 
-button {
-  margin-right: 1%;
-  margin-left: 1%;
-}

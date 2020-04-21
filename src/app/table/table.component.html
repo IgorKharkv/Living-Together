@@ -1,7 +1,7 @@
 <div class="buttons">
-  <button mat-raised-button color="primary" (click)="something()"> תיקון טבלה </button>
-  <button mat-raised-button color="warn" (click)="something()"> מחיקת רשומה </button>
-  <button mat-raised-button (click)="something()"> הוספת רשומה </button>
+  <button mat-raised-button color="primary" (click)="addColumn()"> תיקון טבלה </button>
+  <button mat-raised-button color="warn" (click)="removeColumn()"> מחיקת רשומה </button>
+  <button mat-raised-button (click)="shuffle()"> הוספת רשומה </button>
 </div>
 
 <table mat-table [dataSource]="data" class="mat-elevation-z8">

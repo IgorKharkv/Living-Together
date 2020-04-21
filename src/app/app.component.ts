@@ -1,6 +1,8 @@
-import {Component, ViewEncapsulation} from '@angular/core';
-import data from '../assets/data.json';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import databases from '../assets/data.json';
 import {Database} from './models/database';
+import {PassageService} from './services/passage.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,9 +10,20 @@ import {Database} from './models/database';
   styleUrls: ['./app.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+  constructor(private passageService: PassageService) {
+  }
 
   getDatabases(): Database[] {
-    return data;
+    return databases;
+  }
+
+  ngOnInit(): void {
+    this.passageService.init();
+  }
+
+  getPassages(name: string): Observable<any[]> {
+    return this.passageService.passagesDictionary[name];
   }
 }
