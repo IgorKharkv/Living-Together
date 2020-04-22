@@ -132,3 +132,11 @@ export function getAuPassages(): Observable<AuPassage[]> {
   return of(AU_PASSAGES);
 }
 
+export function insertAllToPassageCopy(): Observable<boolean> {
+  return of(true);
+}
+
+export function insertAllToAuPassageCopy(): Observable<boolean> {
+  return of(true);
+}
+

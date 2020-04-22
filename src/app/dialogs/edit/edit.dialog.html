@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Hi Igor</h1>
+<div mat-dialog-content>
+  <div *ngFor="let column of data.columns">
+    <p>{{column}}</p>
+    <mat-form-field>
+      <mat-label>{{column}}</mat-label>
+      <input matInput [(ngModel)]="data.data[column]">
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+</div>

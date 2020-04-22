@@ -1,5 +1,10 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Table} from '../models/table';
+import {PassageService} from '../services/passage.service';
+import {AuPassage} from '../models/au_passage';
+import {Passage} from '../models/passage';
+import {MatDialog} from '@angular/material';
+import {EditDialogComponent} from '../dialogs/edit/edit.dialog.component';
 
 @Component({
   selector: 'app-table',
@@ -16,34 +21,38 @@ export class TableComponent implements OnInit {
   columnsToDisplay: string[];
   data;
 
+  constructor(private passageService: PassageService,
+              public dialog: MatDialog) {}
+
   ngOnInit(): void {
     this.displayedHebrewColumns = this.table.hebrew_columns;
     this.displayedColumns = this.table.columns;
-    this.columnsToDisplay = this.displayedColumns.slice();
+    this.columnsToDisplay = this.displayedColumns.concat('Edit').slice();
     this.data = this.passages;
   }
 
-  addColumn() {
-    const randomColumn = Math.floor(Math.random() * this.displayedColumns.length);
-    this.columnsToDisplay.push(this.displayedColumns[randomColumn]);
-  }
-
-  removeColumn() {
-    if (this.columnsToDisplay.length) {
-      this.columnsToDisplay.pop();
+  fixLivingTogether() {
+    if (this.table.name.includes('Au')) {
+      this.passageService.insertAllToAuPassageCopy(this.data).subscribe(
+        () => this.data = []
+      );
+    } else {
+      this.passageService.insertAllToPassageCopy(this.data).subscribe(
+        () => this.data = []
+      );
     }
   }
 
-  shuffle() {
-    let currentIndex = this.columnsToDisplay.length;
-    while (0 !== currentIndex) {
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-
-      // Swap
-      let temp = this.columnsToDisplay[currentIndex];
-      this.columnsToDisplay[currentIndex] = this.columnsToDisplay[randomIndex];
-      this.columnsToDisplay[randomIndex] = temp;
+  editRow(passage) {
+    let data;
+    const columns = this.displayedColumns;
+    if (this.table.name.includes('Au')) {
+      data = passage as AuPassage;
+    } else {
+      data = passage as Passage;
     }
+    const dialogRef = this.dialog.open(EditDialogComponent, {
+      data: {data, columns},
+    });
   }
 }
