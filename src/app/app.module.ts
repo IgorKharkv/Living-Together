@@ -4,13 +4,24 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatTableModule, MatTabsModule} from '@angular/material';
-import { TableComponent } from './table/table.component';
+import {
+  MatButtonModule, MatDialogModule, MatFormFieldModule,
+  MatIconModule, MatInputModule,
+  MatListModule,
+  MatSidenavModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule
+} from '@angular/material';
+import {TableComponent} from './table/table.component';
+import {EditDialogComponent} from './dialogs/edit/edit.dialog.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableComponent
+    TableComponent,
+    EditDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -18,8 +29,17 @@ import { TableComponent } from './table/table.component';
     BrowserAnimationsModule,
     MatTabsModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    MatDialogModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
+  entryComponents: [EditDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
