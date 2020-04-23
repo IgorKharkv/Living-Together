@@ -20,11 +20,13 @@ export class TableComponent implements OnInit {
   displayedColumns: string[];
   columnsToDisplay: string[];
   data;
+  columns = {};
 
   constructor(private passageService: PassageService,
               public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.table.columns.forEach((key, i) => this.columns[key] = this.table.hebrew_columns[i]);
     this.displayedHebrewColumns = this.table.hebrew_columns;
     this.displayedColumns = this.table.columns;
     this.columnsToDisplay = this.displayedColumns.concat('Edit').slice();
@@ -45,14 +47,22 @@ export class TableComponent implements OnInit {
 
   editRow(passage) {
     let data;
-    const columns = this.displayedColumns;
+    const table = this.table;
+    const hebrewColumns = this.displayedHebrewColumns;
     if (this.table.name.includes('Au')) {
       data = passage as AuPassage;
     } else {
       data = passage as Passage;
     }
     const dialogRef = this.dialog.open(EditDialogComponent, {
-      data: {data, columns},
+      data: {data, table},
+      width: '25%'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.data[(this.data.findIndex(() => result))] = result;
+        debugger;
+      }
     });
   }
 }
