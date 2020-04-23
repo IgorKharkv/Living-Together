@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {AuPassage} from '../models/au_passage';
 import {Passage} from '../models/passage';
-import databases from '../../assets/data.json';
+import databases from '../../assets/databases.json';
 import errorsTranslator from '../../assets/error_messages_translate.json';
 import {getAuPassages, getPassages , insertAllToAuPassageCopy, insertAllToPassageCopy} from '../mocks/db-data';
-import {catchError, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {ErrorsTranslator} from '../models/errorsTranslator';
+
+const MAVPAS = 0;
+const PAS = 1;
+const CONNECTION = 0;
+const LOGIC = 1;
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +24,7 @@ export class PassageService {
   logicPassages$: Observable<Passage[]>;
   passagesDictionary: { [tableName: string]: Observable<any>; } = {};
 
-  constructor() { }
-
-  public init() {
-    this.passages();
-  }
-
-  private passages() {
+  public initPassages() {
     this.auConnectionPassages$ = getAuPassages();
     this.auLogicPassages$ = getAuPassages();
     this.connectionPassages$ = getPassages();
@@ -34,37 +33,29 @@ export class PassageService {
   }
 
   private setDictionary() {
-    this.passagesDictionary[databases[0].tables[0].name] =
-      this.connectionPassages$.pipe(map(value => this.translatePassageErrors(value)));
-    this.passagesDictionary[databases[0].tables[1].name] =
-      this.logicPassages$.pipe(map(value => this.translatePassageErrors(value)));
-    this.passagesDictionary[databases[1].tables[0].name] =
-      this.auConnectionPassages$.pipe(map(value => this.translateAuPassageErrors(value)));
-    this.passagesDictionary[databases[1].tables[1].name] =
-      this.auLogicPassages$.pipe(map(value => this.translateAuPassageErrors(value)));
+    this.passagesDictionary[databases[MAVPAS].tables[CONNECTION].name] =
+      this.connectionPassages$.pipe(map(value => this.translateErrors(value)));
+    this.passagesDictionary[databases[MAVPAS].tables[LOGIC].name] =
+      this.logicPassages$.pipe(map(value => this.translateErrors(value)));
+    this.passagesDictionary[databases[PAS].tables[CONNECTION].name] =
+      this.auConnectionPassages$.pipe(map(value => this.translateErrors(value)));
+    this.passagesDictionary[databases[PAS].tables[LOGIC].name] =
+      this.auLogicPassages$.pipe(map(value => this.translateErrors(value)));
   }
 
-  private translateAuPassageErrors(passages: AuPassage[]) {
+  private translateErrors(passages: AuPassage[] | Passage[]) {
     const translator = errorsTranslator as ErrorsTranslator;
-    return passages.map(passage => {
-      passage.TRANSLATE = translator[passage.ERROR_MSG];
-      return passage;
-    });
-  }
-
-  private translatePassageErrors(passages: Passage[]) {
-    const translator = errorsTranslator as ErrorsTranslator;
-    return passages.map(passage => {
-      passage.TRANSLATE = translator[passage.ERROR_MSG];
-      return passage;
-    });
+    passages.forEach(passage => passage.TRANSLATE = translator[passage.ERROR_MSG]);
+    return passages;
   }
 
   public insertAllToPassageCopy(passages: Passage[]) {
+    // TODO: http post to copy
     return insertAllToAuPassageCopy();
   }
 
   public insertAllToAuPassageCopy(passages: AuPassage[]) {
+    // TODO: http post to copy
     return insertAllToPassageCopy();
   }
 }

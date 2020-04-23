@@ -14,8 +14,8 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import {TableComponent} from './table/table.component';
-import {EditDialogComponent} from './dialogs/edit/edit.dialog.component';
 import {FormsModule} from '@angular/forms';
+import {EditDialogComponent} from './dialog/edit.dialog.component';
 
 @NgModule({
   declarations: [

@@ -4,3 +4,7 @@
   color: black;
 }
 
+.title {
+  display: flex;
+  justify-content: center;
+}
