@@ -4,7 +4,7 @@ import {PassageService} from '../services/passage.service';
 import {AuPassage} from '../models/au_passage';
 import {Passage} from '../models/passage';
 import {MatDialog} from '@angular/material';
-import {EditDialogComponent} from '../dialogs/edit/edit.dialog.component';
+import {EditDialogComponent} from '../dialog/edit.dialog.component';
 
 @Component({
   selector: 'app-table',
@@ -16,10 +16,9 @@ export class TableComponent implements OnInit {
   @Input() table: Table;
   @Input() passages;
 
-  displayedHebrewColumns: string[];
   displayedColumns: string[];
-  columnsToDisplay: string[];
-  data;
+  rowsToDisplay: string[];
+  passageToDisplay;
   columns = {};
 
   constructor(private passageService: PassageService,
@@ -27,41 +26,38 @@ export class TableComponent implements OnInit {
 
   ngOnInit(): void {
     this.table.columns.forEach((key, i) => this.columns[key] = this.table.hebrew_columns[i]);
-    this.displayedHebrewColumns = this.table.hebrew_columns;
     this.displayedColumns = this.table.columns;
-    this.columnsToDisplay = this.displayedColumns.concat('Edit').slice();
-    this.data = this.passages;
+    this.rowsToDisplay = this.displayedColumns.concat('Edit').slice();
+    this.passageToDisplay = this.passages;
   }
 
   fixLivingTogether() {
     if (this.table.name.includes('Au')) {
-      this.passageService.insertAllToAuPassageCopy(this.data).subscribe(
-        () => this.data = []
+      this.passageService.insertAllToAuPassageCopy(this.passageToDisplay).subscribe(
+        () => this.passageToDisplay = []
       );
     } else {
-      this.passageService.insertAllToPassageCopy(this.data).subscribe(
-        () => this.data = []
+      this.passageService.insertAllToPassageCopy(this.passageToDisplay).subscribe(
+        () => this.passageToDisplay = []
       );
     }
   }
 
   editRow(passage) {
-    let data;
-    const table = this.table;
-    const hebrewColumns = this.displayedHebrewColumns;
+    let passageToDialog;
+    const table = this.columns;
     if (this.table.name.includes('Au')) {
-      data = passage as AuPassage;
+      passageToDialog = passage as AuPassage;
     } else {
-      data = passage as Passage;
+      passageToDialog = passage as Passage;
     }
     const dialogRef = this.dialog.open(EditDialogComponent, {
-      data: {data, table},
+      data: {passageToDialog, table},
       width: '25%'
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.data[(this.data.findIndex(() => result))] = result;
-        debugger;
+        this.passageToDisplay[(this.passageToDisplay.findIndex(() => result))] = result;
       }
     });
   }

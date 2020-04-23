@@ -1,8 +1,8 @@
 <div mat-dialog-content>
-  <div *ngFor="let item of result | keyvalue" class="form">
+  <div *ngFor="let item of data.table | keyvalue" class="form">
     <mat-form-field>
       <mat-label>{{item.value}}</mat-label>
-      <input matInput [type]="typeOfPassage(passage[item.key])" [ngModel]="passage[item.key]">
+      <input matInput [type]="typeOfPassage(passage[item.key])" [(ngModel)]="passage[item.key]">
     </mat-form-field>
   </div>
 </div>
