@@ -1,14 +1,12 @@
-<h1 mat-dialog-title>Hi Igor</h1>
 <div mat-dialog-content>
-  <div *ngFor="let column of data.columns">
-    <p>{{column}}</p>
+  <div *ngFor="let item of result | keyvalue" class="form">
     <mat-form-field>
-      <mat-label>{{column}}</mat-label>
-      <input matInput [(ngModel)]="data.data[column]">
+      <mat-label>{{item.value}}</mat-label>
+      <input matInput [type]="typeOfPassage(passage[item.key])" [ngModel]="passage[item.key]">
     </mat-form-field>
   </div>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+<div mat-dialog-actions class="buttons">
+  <button mat-raised-button (click)="closeDialog()">בטל</button>
+  <button mat-raised-button color="primary" (click)="savePassage()">שמור</button>
 </div>
