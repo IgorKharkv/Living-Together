@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Table} from '../models/table';
 import {PassageService} from '../services/passage.service';
 import {AuPassage} from '../models/au_passage';
@@ -11,7 +11,7 @@ import {EditDialogComponent} from '../dialog/edit.dialog.component';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
 
   @Input() table: Table;
   @Input() passages;
@@ -29,6 +29,12 @@ export class TableComponent implements OnInit {
     this.displayedColumns = this.table.columns;
     this.rowsToDisplay = this.displayedColumns.concat('Edit').slice();
     this.passageToDisplay = this.passages;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.passages) {
+      this.passageToDisplay = this.passages;
+    }
   }
 
   fixLivingTogether() {

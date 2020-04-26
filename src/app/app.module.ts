@@ -16,6 +16,7 @@ import {
 import {TableComponent} from './table/table.component';
 import {FormsModule} from '@angular/forms';
 import {EditDialogComponent} from './dialog/edit.dialog.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {EditDialogComponent} from './dialog/edit.dialog.component';
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    HttpClientModule
   ],
   entryComponents: [EditDialogComponent],
   providers: [],

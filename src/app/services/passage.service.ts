@@ -4,9 +4,11 @@ import {AuPassage} from '../models/au_passage';
 import {Passage} from '../models/passage';
 import databases from '../../assets/databases.json';
 import errorsTranslator from '../../assets/error_messages_translate.json';
-import {getAuPassages, getPassages , insertAllToAuPassageCopy, insertAllToPassageCopy} from '../mocks/db-data';
+import {insertAllToAuPassageCopy, insertAllToPassageCopy} from '../mocks/db-data';
 import {map} from 'rxjs/operators';
 import {ErrorsTranslator} from '../models/errorsTranslator';
+import {environment} from '../../environments/environment.prod';
+import {HttpClient} from '@angular/common/http';
 
 const MAVPAS = 0;
 const PAS = 1;
@@ -18,17 +20,20 @@ const LOGIC = 1;
 })
 export class PassageService {
 
+  constructor(private http: HttpClient) {}
+
   auLogicPassages$: Observable<AuPassage[]>;
   auConnectionPassages$: Observable<AuPassage[]>;
   connectionPassages$: Observable<Passage[]>;
   logicPassages$: Observable<Passage[]>;
   passagesDictionary: { [tableName: string]: Observable<any>; } = {};
+  baseUrl = environment.baseUrl;
 
   public initPassages() {
-    this.auConnectionPassages$ = getAuPassages();
-    this.auLogicPassages$ = getAuPassages();
-    this.connectionPassages$ = getPassages();
-    this.logicPassages$ = getPassages();
+    this.auConnectionPassages$ = this.getConnectionAuPassages();
+    this.auLogicPassages$ = this.getLogicAuPassages();
+    this.connectionPassages$ = this.getConnectionPassages();
+    this.logicPassages$ = this.getLogicPassages();
     this.setDictionary();
   }
 
@@ -45,7 +50,7 @@ export class PassageService {
 
   private translateErrors(passages: AuPassage[] | Passage[]) {
     const translator = errorsTranslator as ErrorsTranslator;
-    passages.forEach(passage => passage.TRANSLATE = translator[passage.ERROR_MSG]);
+    passages.forEach(passage => passage.translate = translator[passage.error_msg]);
     return passages;
   }
 
@@ -57,5 +62,21 @@ export class PassageService {
   public insertAllToAuPassageCopy(passages: AuPassage[]) {
     // TODO: http post to copy
     return insertAllToPassageCopy();
+  }
+
+  public getConnectionAuPassages(): Observable<AuPassage[]> {
+    return this.http.get<AuPassage[]>(this.baseUrl + '/auConnectionPassages');
+  }
+
+  public getLogicAuPassages(): Observable<AuPassage[]> {
+    return this.http.get<AuPassage[]>(this.baseUrl + '/auLogicPassages');
+  }
+
+  public getConnectionPassages(): Observable<Passage[]> {
+    return this.http.get<Passage[]>(this.baseUrl + '/connectionPassages');
+  }
+
+  public getLogicPassages(): Observable<Passage[]> {
+    return this.http.get<Passage[]>(this.baseUrl + '/logicPassages');
   }
 }

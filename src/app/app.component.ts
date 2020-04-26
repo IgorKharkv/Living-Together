@@ -3,6 +3,8 @@ import databases from '../assets/databases.json';
 import {Database} from './models/database';
 import {PassageService} from './services/passage.service';
 import {Observable} from 'rxjs';
+import {Passage} from './models/passage';
+import {AuPassage} from './models/au_passage';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,7 @@ export class AppComponent implements OnInit {
 
   public getDatabases(): Database[] { return databases; }
 
-  public getPassages(name: string): Observable<any[]> {
+  public getPassages(name: string): Observable<Passage[] | AuPassage[]> {
     return this.passageService.passagesDictionary[name];
   }
 }
