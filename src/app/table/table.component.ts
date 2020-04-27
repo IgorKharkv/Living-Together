@@ -75,4 +75,9 @@ export class TableComponent implements OnInit, OnChanges {
   public isLogicTable() {
     return this.table.role.includes('לוגיקה');
   }
+
+  public applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.passageToDisplay.filter = filterValue.trim().toLowerCase();
+  }
 }
