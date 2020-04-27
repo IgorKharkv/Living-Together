@@ -4,7 +4,6 @@ import {AuPassage} from '../models/au_passage';
 import {Passage} from '../models/passage';
 import databases from '../../assets/databases.json';
 import errorsTranslator from '../../assets/error_messages_translate.json';
-import {insertAllToAuPassageCopy, insertAllToPassageCopy} from '../mocks/db-data';
 import {map} from 'rxjs/operators';
 import {ErrorsTranslator} from '../models/errorsTranslator';
 import {environment} from '../../environments/environment.prod';
@@ -26,7 +25,8 @@ export class PassageService {
   auConnectionPassages$: Observable<AuPassage[]>;
   connectionPassages$: Observable<Passage[]>;
   logicPassages$: Observable<Passage[]>;
-  passagesDictionary: { [tableName: string]: Observable<any>; } = {};
+  passagesDictionary: { [tableName: string]: [ Observable<any>,
+                                               (passages: AuPassage[] | Passage[]) => Observable<boolean> ]; } = {};
   baseUrl = environment.baseUrl;
 
   public initPassages() {
@@ -39,13 +39,16 @@ export class PassageService {
 
   private setDictionary() {
     this.passagesDictionary[databases[MAVPAS].tables[CONNECTION].name] =
-      this.connectionPassages$.pipe(map(value => this.translateErrors(value)));
+      [this.connectionPassages$.pipe(map(value => this.translateErrors(value))), this.insertToPassageCopyFromConnection.bind(this)];
+
     this.passagesDictionary[databases[MAVPAS].tables[LOGIC].name] =
-      this.logicPassages$.pipe(map(value => this.translateErrors(value)));
+      [this.logicPassages$.pipe(map(value => this.translateErrors(value))), this.insertToPassageCopyFromLogic.bind(this)];
+
     this.passagesDictionary[databases[PAS].tables[CONNECTION].name] =
-      this.auConnectionPassages$.pipe(map(value => this.translateErrors(value)));
+      [this.auConnectionPassages$.pipe(map(value => this.translateErrors(value))), this.insertToAuPassageCopyFromConnection.bind(this)];
+
     this.passagesDictionary[databases[PAS].tables[LOGIC].name] =
-      this.auLogicPassages$.pipe(map(value => this.translateErrors(value)));
+      [this.auLogicPassages$.pipe(map(value => this.translateErrors(value))), this.insertToAuPassageCopyFromLogic.bind(this)];
   }
 
   private translateErrors(passages: AuPassage[] | Passage[]) {
@@ -54,14 +57,20 @@ export class PassageService {
     return passages;
   }
 
-  public insertAllToPassageCopy(passages: Passage[]) {
-    // TODO: http post to copy
-    return insertAllToAuPassageCopy();
+  public insertToPassageCopyFromConnection(passages: Passage[]) {
+    return this.http.post<boolean>(this.baseUrl + '/fixConnectionPassages', passages);
   }
 
-  public insertAllToAuPassageCopy(passages: AuPassage[]) {
-    // TODO: http post to copy
-    return insertAllToPassageCopy();
+  public insertToPassageCopyFromLogic(passages: Passage[]) {
+    return this.http.post<boolean>(this.baseUrl + '/fixLogicPassages', passages);
+  }
+
+  public insertToAuPassageCopyFromConnection(passages: AuPassage[]) {
+    return this.http.post<boolean>(this.baseUrl + '/fixAuConnectionPassages', passages);
+  }
+
+  public insertToAuPassageCopyFromLogic(passages: AuPassage[]) {
+    return this.http.post<boolean>(this.baseUrl + '/fixAuLogicPassages', passages);
   }
 
   public getConnectionAuPassages(): Observable<AuPassage[]> {

@@ -1,10 +1,10 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Table} from '../models/table';
-import {PassageService} from '../services/passage.service';
 import {AuPassage} from '../models/au_passage';
 import {Passage} from '../models/passage';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {EditDialogComponent} from '../dialog/edit.dialog.component';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-table',
@@ -15,14 +15,15 @@ export class TableComponent implements OnInit, OnChanges {
 
   @Input() table: Table;
   @Input() passages;
+  @Input() fixTableFunction: (passages: AuPassage[] | Passage[]) => Observable<boolean>;
 
   displayedColumns: string[];
   rowsToDisplay: string[];
   passageToDisplay;
   columns = {};
 
-  constructor(private passageService: PassageService,
-              public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog,
+              private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.table.columns.forEach((key, i) => this.columns[key] = this.table.hebrew_columns[i]);
@@ -37,16 +38,18 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
-  fixLivingTogether() {
-    if (this.table.name.includes('Au')) {
-      this.passageService.insertAllToAuPassageCopy(this.passageToDisplay).subscribe(
-        () => this.passageToDisplay = []
-      );
-    } else {
-      this.passageService.insertAllToPassageCopy(this.passageToDisplay).subscribe(
-        () => this.passageToDisplay = []
-      );
-    }
+  fixTable() {
+    this.fixTableFunction(this.passages).subscribe(
+      () => {
+        this.passageToDisplay = [];
+        this.snackBar.open('הנתונים הועברו בהצלחה', null, {
+          duration: 3000,
+        });
+      },
+      () => this.snackBar.open('הייתה שגיאה בתיקון הטבלה', null, {
+        duration: 3000,
+      })
+    );
   }
 
   editRow(passage) {
