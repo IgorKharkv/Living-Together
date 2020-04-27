@@ -8,7 +8,7 @@ import {
   MatButtonModule, MatDialogModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
   MatListModule,
-  MatSidenavModule, MatSnackBarModule,
+  MatSidenavModule, MatSnackBarModule, MatSortModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule
@@ -40,7 +40,8 @@ import {HttpClientModule} from '@angular/common/http';
     MatFormFieldModule,
     MatInputModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSortModule
   ],
   entryComponents: [EditDialogComponent],
   providers: [],

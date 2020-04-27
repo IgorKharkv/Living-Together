@@ -1,11 +1,12 @@
 <div>
-  <div class="buttons">
+
+  <div class="buttons" *ngIf="!isLogicTable()">
     <button mat-raised-button color="primary" (click)="fixTable()"> תיקון טבלה </button>
   </div>
 
-  <table mat-table [dataSource]="passageToDisplay" class="mat-elevation-z8">
+  <table mat-table matSort [dataSource]="passageToDisplay" class="mat-elevation-z8">
     <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
-      <th mat-header-cell *matHeaderCellDef> {{columns[column]}} </th>
+      <th mat-header-cell mat-sort-header *matHeaderCellDef> {{columns[column]}} </th>
       <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
     </ng-container>
 
