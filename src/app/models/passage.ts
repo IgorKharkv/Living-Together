@@ -1,7 +1,7 @@
 export interface Passage {
-  ID: number;
-  CITIZEN_ID: number;
-  START_DATE: Date;
-  ERROR_MSG: string;
-  TRANSLATE?: string;
+  id: number;
+  citizen_id: number;
+  start_date: Date;
+  error_msg: string;
+  translate?: string;
 }

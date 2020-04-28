@@ -3,6 +3,11 @@ import databases from '../assets/databases.json';
 import {Database} from './models/database';
 import {PassageService} from './services/passage.service';
 import {Observable} from 'rxjs';
+import {Passage} from './models/passage';
+import {AuPassage} from './models/au_passage';
+
+const PASSAGES_ARRAY = 0;
+const FUNCTION_FIX_TABLE = 1;
 
 @Component({
   selector: 'app-root',
@@ -18,7 +23,11 @@ export class AppComponent implements OnInit {
 
   public getDatabases(): Database[] { return databases; }
 
-  public getPassages(name: string): Observable<any[]> {
-    return this.passageService.passagesDictionary[name];
+  public getPassages(name: string): Observable<Passage[] | AuPassage[]> {
+    return this.passageService.passagesDictionary[name][PASSAGES_ARRAY];
+  }
+
+  public getFixFunction(name: string): (passages: AuPassage[] | Passage[]) => Observable<boolean> {
+    return this.passageService.passagesDictionary[name][FUNCTION_FIX_TABLE];
   }
 }

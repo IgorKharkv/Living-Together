@@ -5,13 +5,13 @@
       {
         "role" : "תקשורת",
         "name" : "Passage_Error",
-        "columns": ["ID", "CITIZEN_ID", "START_DATE", "ERROR_MSG", "TRANSLATE"],
+        "columns": ["id", "citizen_id", "start_date", "error_msg", "translate"],
         "hebrew_columns": ["מזהה", "תעודת זהות", "תאריך התחלה", "הודעת שגיאה", "תרגום שגיאה"]
       },
       {
         "role" : "לוגיקה",
         "name" : "Passage_Trg_Error",
-        "columns": ["ID", "CITIZEN_ID", "START_DATE", "ERROR_MSG", "TRANSLATE"],
+        "columns": ["id", "citizen_id", "start_date", "error_msg", "translate"],
         "hebrew_columns": ["מזהה", "תעודת זהות", "תאריך התחלה", "הודעת שגיאה", "תרגום שגיאה"]
       }
     ]
@@ -22,13 +22,13 @@
       {
         "role" : "תקשורת",
         "name" : "Au_Passage_Error",
-        "columns": ["PI_ID_NUM", "PI_DATE", "ERROR_MSG", "TRANSLATE"],
+        "columns": ["pi_id_num", "pi_date", "error_msg", "translate"],
         "hebrew_columns": ["תעודת זהות", "תאריך התחלה", "הודעת שגיאה", "תרגום שגיאה"]
       },
       {
         "role" : "לוגיקה",
         "name" : "Au_Passage_Trg_Error",
-        "columns": ["PI_ID_NUM", "PI_DATE", "ERROR_MSG", "TRANSLATE"],
+        "columns": ["pi_id_num", "pi_date", "error_msg", "translate"],
         "hebrew_columns": ["תעודת זהות", "תאריך התחלה", "הודעת שגיאה", "תרגום שגיאה"]
       }
     ]

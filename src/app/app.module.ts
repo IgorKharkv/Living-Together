@@ -8,7 +8,7 @@ import {
   MatButtonModule, MatDialogModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
   MatListModule,
-  MatSidenavModule,
+  MatSidenavModule, MatSnackBarModule, MatSortModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule
@@ -16,6 +16,7 @@ import {
 import {TableComponent} from './table/table.component';
 import {FormsModule} from '@angular/forms';
 import {EditDialogComponent} from './dialog/edit.dialog.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,10 @@ import {EditDialogComponent} from './dialog/edit.dialog.component';
     MatDialogModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    HttpClientModule,
+    MatSnackBarModule,
+    MatSortModule
   ],
   entryComponents: [EditDialogComponent],
   providers: [],

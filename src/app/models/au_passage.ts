@@ -1,6 +1,6 @@
 export interface AuPassage {
-  PI_ID_NUM: number;
-  PI_DATE: Date;
-  ERROR_MSG: string;
-  TRANSLATE?: string;
+  pi_id_num: number;
+  pi_date: Date;
+  error_msg: string;
+  translate?: string;
 }
