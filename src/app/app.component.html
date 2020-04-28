@@ -15,7 +15,8 @@
         <mat-tab *ngFor="let table of database.tables"  [label]="table.role">
 
           <app-table [table]="table" [fixTableFunction]="this.getFixFunction(table.name)"
-                     [passages]="this.getPassages(table.name) | async"></app-table>
+                     [passages]="this.getPassages(table.name) | async">
+          </app-table>
 
         </mat-tab>
 

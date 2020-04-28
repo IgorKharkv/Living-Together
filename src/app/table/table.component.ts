@@ -29,7 +29,7 @@ export class TableComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.table.columns.forEach((key, i) => this.columns[key] = this.table.hebrew_columns[i]);
     this.displayedColumns = this.table.columns;
-    this.rowsToDisplay = this.displayedColumns.concat('Edit').slice();
+    this.rowsToDisplay = this.isLogicTable() ? this.displayedColumns.concat('Edit').slice() : this.displayedColumns.slice();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,7 +67,17 @@ export class TableComponent implements OnInit, OnChanges {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.passageToDisplay[(this.passageToDisplay.findIndex(() => result))] = result;
+        this.fixTableFunction(result).subscribe(
+          () => {
+            this.passageToDisplay = new MatTableDataSource(this.passages.filter(obj => obj !== result));
+            this.snackBar.open('המעבר הועבר בהצלחה', null, {
+              duration: 3000,
+            });
+          },
+          () => this.snackBar.open('הייתה שגיאה בהעברת המעבר', null, {
+            duration: 3000,
+          })
+        );
       }
     });
   }

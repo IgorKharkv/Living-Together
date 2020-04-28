@@ -26,7 +26,7 @@ export class PassageService {
   connectionPassages$: Observable<Passage[]>;
   logicPassages$: Observable<Passage[]>;
   passagesDictionary: { [tableName: string]: [ Observable<any>,
-                                               (passages: AuPassage[] | Passage[]) => Observable<boolean> ]; } = {};
+                                               (passages: AuPassage[] | Passage[] | Passage | AuPassage) => Observable<boolean> ]; } = {};
   baseUrl = environment.baseUrl;
 
   public initPassages() {
@@ -61,16 +61,16 @@ export class PassageService {
     return this.http.post<boolean>(this.baseUrl + '/fixConnectionPassages', passages);
   }
 
-  public insertToPassageCopyFromLogic(passages: Passage[]) {
-    return this.http.post<boolean>(this.baseUrl + '/fixLogicPassages', passages);
+  public insertToPassageCopyFromLogic(passage: Passage) {
+    return this.http.post<boolean>(this.baseUrl + '/fixLogicPassage', passage);
   }
 
   public insertToAuPassageCopyFromConnection(passages: AuPassage[]) {
     return this.http.post<boolean>(this.baseUrl + '/fixAuConnectionPassages', passages);
   }
 
-  public insertToAuPassageCopyFromLogic(passages: AuPassage[]) {
-    return this.http.post<boolean>(this.baseUrl + '/fixAuLogicPassages', passages);
+  public insertToAuPassageCopyFromLogic(passage: AuPassage) {
+    return this.http.post<boolean>(this.baseUrl + '/fixAuLogicPassage', passage);
   }
 
   public getConnectionAuPassages(): Observable<AuPassage[]> {
