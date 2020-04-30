@@ -26,7 +26,8 @@ export class PassageService {
   connectionPassages$: Observable<Passage[]>;
   logicPassages$: Observable<Passage[]>;
   passagesDictionary: { [tableName: string]: [ Observable<any>,
-                                               (passages: AuPassage[] | Passage[] | Passage | AuPassage) => Observable<boolean> ]; } = {};
+                                               (passages: AuPassage[] | Passage[] | Passage | AuPassage) => Observable<boolean> ,
+                                               number]; } = {};
   baseUrl = environment.baseUrl;
 
   public initPassages() {
@@ -39,16 +40,16 @@ export class PassageService {
 
   private setDictionary() {
     this.passagesDictionary[databases[MAVPAS].tables[CONNECTION].name] =
-      [this.connectionPassages$.pipe(map(value => this.translateErrors(value))), this.insertToPassageCopyFromConnection.bind(this)];
+      [this.connectionPassages$.pipe(map(value => this.translateErrors(value))), this.insertToPassageCopyFromConnection.bind(this), 0];
 
     this.passagesDictionary[databases[MAVPAS].tables[LOGIC].name] =
-      [this.logicPassages$.pipe(map(value => this.translateErrors(value))), this.insertToPassageCopyFromLogic.bind(this)];
+      [this.logicPassages$.pipe(map(value => this.translateErrors(value))), this.insertToPassageCopyFromLogic.bind(this), 0];
 
     this.passagesDictionary[databases[PAS].tables[CONNECTION].name] =
-      [this.auConnectionPassages$.pipe(map(value => this.translateErrors(value))), this.insertToAuPassageCopyFromConnection.bind(this)];
+      [this.auConnectionPassages$.pipe(map(value => this.translateErrors(value))), this.insertToAuPassageCopyFromConnection.bind(this), 0];
 
     this.passagesDictionary[databases[PAS].tables[LOGIC].name] =
-      [this.auLogicPassages$.pipe(map(value => this.translateErrors(value))), this.insertToAuPassageCopyFromLogic.bind(this)];
+      [this.auLogicPassages$.pipe(map(value => this.translateErrors(value))), this.insertToAuPassageCopyFromLogic.bind(this), 0];
   }
 
   private translateErrors(passages: AuPassage[] | Passage[]) {
@@ -87,5 +88,13 @@ export class PassageService {
 
   public getLogicPassages(): Observable<Passage[]> {
     return this.http.get<Passage[]>(this.baseUrl + '/logicPassages');
+  }
+
+  public getLengthOfPassages(tableName: string) {
+    return this.passagesDictionary[tableName][2];
+  }
+
+  public setLengthOfPassages(tableName: string, size: number) {
+    this.passagesDictionary[tableName][2] = size;
   }
 }

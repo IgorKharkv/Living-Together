@@ -5,6 +5,7 @@ import {Passage} from '../models/passage';
 import {MatDialog, MatSnackBar, MatSort, MatTableDataSource} from '@angular/material';
 import {EditDialogComponent} from '../dialog/edit.dialog.component';
 import {Observable} from 'rxjs';
+import {PassageService} from '../services/passage.service';
 
 @Component({
   selector: 'app-table',
@@ -24,7 +25,8 @@ export class TableComponent implements OnInit, OnChanges {
   columns = {};
 
   constructor(public dialog: MatDialog,
-              private snackBar: MatSnackBar) {}
+              private snackBar: MatSnackBar,
+              private passageService: PassageService) {}
 
   ngOnInit(): void {
     this.table.columns.forEach((key, i) => this.columns[key] = this.table.hebrew_columns[i]);
@@ -36,6 +38,7 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.passages) {
       this.passageToDisplay = new MatTableDataSource(this.passages);
       this.passageToDisplay.sort = this.sort;
+      this.passageService.setLengthOfPassages(this.table.name, this.passages.length);
     }
   }
 
