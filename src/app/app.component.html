@@ -12,7 +12,7 @@
 
       <mat-tab-group mat-align-tabs="center">
 
-        <mat-tab *ngFor="let table of database.tables"  [label]="table.role">
+        <mat-tab *ngFor="let table of database.tables"  label="{{table.role + this.getTabPassagesSize(table.name)}}">
 
           <app-table [table]="table" [fixTableFunction]="this.getFixFunction(table.name)"
                      [passages]="this.getPassages(table.name) | async">

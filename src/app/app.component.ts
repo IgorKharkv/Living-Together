@@ -30,4 +30,8 @@ export class AppComponent implements OnInit {
   public getFixFunction(name: string): (passages: AuPassage[] | Passage[]) => Observable<boolean> {
     return this.passageService.passagesDictionary[name][FUNCTION_FIX_TABLE];
   }
+
+  public getTabPassagesSize(name: string) {
+    return `(${this.passageService.getLengthOfPassages(name)})`;
+  }
 }
